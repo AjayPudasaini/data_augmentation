@@ -1,0 +1,4 @@
+.env
+Datas/
+*.ipynb
+*.ipynb_checkpoints
