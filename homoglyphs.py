@@ -82,10 +82,18 @@ def convert_to_homoglyph(word):
 
 
 def apply_homoglyphs(paragraph, ratio=0.6):
-    """Convert 60% of the words in the paragraph to homoglyphs."""
+    """Convert a percentage of words in the paragraph to homoglyphs."""
     words = paragraph.split()  # Split paragraph into words
     total_words = len(words)
+    
+    # Ensure ratio is within a valid range
+    ratio = min(max(ratio, 0), 1)
+    
     convert_count = int(total_words * ratio)  # Calculate how many words to convert
+    convert_count = min(convert_count, total_words)  # Ensure convert_count is not greater than total_words
+
+    if convert_count == 0:
+        return paragraph  # Return the original paragraph if no words need conversion
 
     # Randomly select words to convert
     indices_to_convert = random.sample(range(total_words), convert_count)
@@ -96,6 +104,7 @@ def apply_homoglyphs(paragraph, ratio=0.6):
     
     # Join the words back into a paragraph
     return ' '.join(words)
+
 
 
 
