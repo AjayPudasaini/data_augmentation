@@ -36,12 +36,12 @@ def add_random_whitespace(paragraph, max_spaces=3):
 for file in csv_files:
     df = pd.read_csv(file)
     
-    df = df.dropna(subset=["human_text"])
+    df = df.dropna(subset=["machine_text"])
 
     max_space = random.randint(1, 6)
-    df["text_with_whitespace"] = df["human_text"].apply(lambda x: add_random_whitespace(str(x), max_space))
+    df["text_with_whitespace"] = df["machine_text"].apply(lambda x: add_random_whitespace(str(x), max_space))
 
-    output_path = os.path.join("Datas/all_datas/white_space/", os.path.basename(file))
-    df.to_csv(output_path, index=False)
-    
-    print(f"Processed and saved: {output_path}")
+    df.to_csv(file, index=False)
+
+    print(f"Processed and updated: {file}")
+

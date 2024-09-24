@@ -28,14 +28,13 @@ for file in csv_files:
     df = pd.read_csv(file)
     
     # Drop rows where "human_text" is NaN
-    df = df.dropna(subset=["human_text"])
+    df = df.dropna(subset=["machine_text"])
 
     # Apply the whitespace function to "human_text" column
     max_space = random.randint(1, 6)
-    df["text_with_removed_articles"] = df["human_text"].apply(lambda x: remove_articles(str(x)))
+    df["text_with_removed_articles"] = df["machine_text"].apply(lambda x: remove_articles(str(x)))
 
     # Define output path and save the modified DataFrame
-    output_path = os.path.join("Datas/all_datas/removed_articles/", os.path.basename(file))
-    df.to_csv(output_path, index=False)
-    
-    print(f"Processed and saved: {output_path}")
+    df.to_csv(file, index=False)
+
+    print(f"Processed and updated: {file}")

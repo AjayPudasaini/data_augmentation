@@ -114,13 +114,11 @@ for file in csv_files:
     df = pd.read_csv(file)
     
     # Drop rows where "human_text" is NaN
-    df = df.dropna(subset=["human_text"])
+    df = df.dropna(subset=["machine_text"])
 
     homoglyphs_ratio = random.randint(1, 6)
-    df["text_with_homoglyph"] = df["human_text"].apply(lambda x: apply_homoglyphs(str(x), homoglyphs_ratio))
+    df["text_with_homoglyph"] = df["machine_text"].apply(lambda x: apply_homoglyphs(str(x), homoglyphs_ratio))
 
-    # Define output path and save the modified DataFrame
-    output_path = os.path.join("Datas/all_datas/homoglyph/", os.path.basename(file))
-    df.to_csv(output_path, index=False)
-    
-    print(f"Processed and saved: {output_path}")
+    df.to_csv(file, index=False)
+
+    print(f"Processed and updated: {file}")

@@ -37,10 +37,9 @@ for file in csv_files:
 
     df["synonym_replaced"] = replace_with_synonyms(df["prompt"], len(df["prompt"]))
 
-    output_path = os.path.join("Datas/all_datas/sysonym/", os.path.basename(file))
-    df.to_csv(output_path, index=False)
+    df.to_csv(file, index=False)
     
-    print(f"Processed and saved: {output_path}")
+    print(f"Processed and updated: {file}")
 
 
 

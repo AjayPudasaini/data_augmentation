@@ -44,15 +44,13 @@ def misspell_paragraph(paragraph, misspell_ratio=0.7):
 for file in csv_files:
     df = pd.read_csv(file)
     
-    # Drop rows where "human_text" is NaN
-    df = df.dropna(subset=["human_text"])
+    # Drop rows where "machine_text" is NaN
+    df = df.dropna(subset=["machine_text"])
 
-    # Apply the whitespace function to "human_text" column
+    # Apply the whitespace function to "machine_text" column
     misspell_ratio = 0.7
-    df["misspell_text"] = df["human_text"].apply(lambda x: misspell_paragraph(str(x), misspell_ratio))
+    df["misspell_text"] = df["machine_text"].apply(lambda x: misspell_paragraph(str(x), misspell_ratio))
 
-    # Define output path and save the modified DataFrame
-    output_path = os.path.join("Datas/all_datas/misspelling/", os.path.basename(file))
-    df.to_csv(output_path, index=False)
-    
-    print(f"Processed and saved: {output_path}")
+    df.to_csv(file, index=False)
+
+    print(f"Processed and updated: {file}")

@@ -11,7 +11,6 @@ client = OpenAI(api_key= os.getenv("OPENAI_SECRET_KEY"))
 
 csv_dir = "Datas/all_datas/"
 csv_files = glob.glob(os.path.join(csv_dir, "*.csv"))
-csv_files = glob.glob(os.path.join(csv_dir, "*.csv"))
 
 def paraphrase_text(text, token_count=200):
     response = client.chat.completions.create(model="gpt-4",  # 'engine' has been renamed to 'model' in the latest API
@@ -32,14 +31,13 @@ def paraphrase_text(text, token_count=200):
 for file in csv_files:
     df = pd.read_csv(file)
     
-    df = df.dropna(subset=["human_text"])
+    df = df.dropna(subset=["machine_text"])
 
-    df["pharaphase_text"] = paraphrase_text(df["human_text"], len(df["human_text"]))
+    df["pharaphase_text"] = paraphrase_text(df["machine_text"], len(df["human_text"]))
 
-    output_path = os.path.join("Datas/all_datas/pharaphase/", os.path.basename(file))
-    df.to_csv(output_path, index=False)
-    
-    print(f"Processed and saved: {output_path}")
+    df.to_csv(file, index=False)
+
+    print(f"Processed and updated: {file}")
 
 
 
