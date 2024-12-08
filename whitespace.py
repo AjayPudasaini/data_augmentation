@@ -6,42 +6,36 @@ import glob
 csv_dir = "Datas/all_datas/"
 csv_files = glob.glob(os.path.join(csv_dir, "*.csv"))
 
-def add_random_whitespace(paragraph, max_spaces=3):
-    def insert_spaces(word):
-        if len(word) < 2:
-            return word
-        word_list = list(word)
-        num_inserts = random.randint(1, max_spaces)
-        for _ in range(num_inserts):
-            pos = random.randint(0, len(word_list) - 1)
-            word_list.insert(pos, ' ')
-        return ''.join(word_list)
+# Function to randomly add a space before some commas
+def add_random_space_before_comma(text, max_changes=1):
+    comma_positions = [i for i, char in enumerate(text) if char == ',']
     
-    words = paragraph.split()
-    new_words = []
+    # If there are no commas, return the original text
+    if not comma_positions:
+        return text
     
-    for word in words:
-        new_word = insert_spaces(word)
-        new_words.append(new_word)
-        
-        spaces_to_add = random.randint(0, max_spaces)
-        if spaces_to_add > 0:
-            new_words.append(' ' * 2)
+    # Determine the number of commas to modify (at most max_changes or total commas)
+    num_changes = min(max_changes, len(comma_positions))
+    positions_to_modify = random.sample(comma_positions, num_changes)
     
-    new_paragraph = ''.join(new_words)
-    return new_paragraph
-
-
+    text_list = list(text)
+    for pos in sorted(positions_to_modify, reverse=True):
+        text_list.insert(pos, ' ')  # Add a space before the comma
+    
+    return ''.join(text_list)
 
 for file in csv_files:
     df = pd.read_csv(file)
     
+    # Drop rows with NaN in "machine_text"
     df = df.dropna(subset=["machine_text"])
 
-    max_space = random.randint(1, 6)
-    df["text_with_whitespace"] = df["machine_text"].apply(lambda x: add_random_whitespace(str(x), max_space))
+    # Apply the random space modification to the "machine_text" column
+    df["text_with_whitespace"] = df["machine_text"].apply(
+        lambda x: add_random_space_before_comma(str(x), max_changes=random.randint(1, 3))
+    )
 
+    # Save updated CSV
     df.to_csv(file, index=False)
 
     print(f"Processed and updated: {file}")
-
