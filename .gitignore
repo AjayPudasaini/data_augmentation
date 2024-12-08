@@ -2,3 +2,4 @@
 Datas/
 *.ipynb
 *.ipynb_checkpoints
+venv/
